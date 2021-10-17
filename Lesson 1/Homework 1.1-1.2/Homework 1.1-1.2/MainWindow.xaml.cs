@@ -55,7 +55,7 @@ namespace Homework_1._1_1._2
                 }
                 else
                 {
-                    Thread.CurrentThread.Abort();
+                    break;
                 }
             }
         }
