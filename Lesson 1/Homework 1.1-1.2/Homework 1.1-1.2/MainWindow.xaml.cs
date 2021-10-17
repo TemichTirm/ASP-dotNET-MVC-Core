@@ -23,6 +23,7 @@ namespace Homework_1._1_1._2
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool isQuit = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,28 +33,38 @@ namespace Homework_1._1_1._2
         }
         /// <summary> 
         /// Вычисляет в цикле число из последовательности Фибоначчи и обновляет данные в TextBox
-        /// </summary>
-        /// <param name="argument">Задержка при вычислении каждого последующего значения, по умолчанию 1 с.</param>         
-        public void Fibonachi()
+        /// </summary>        
+        private void Fibonachi()
         {
             int delay = 1000;
             ulong sumPrev = 0;
             ulong sum = 1;
             while (true)
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                if (!isQuit)
                 {
-                    delay = (int)DelayInput.Value;
-                    FibonachiTextBox.Text = sumPrev.ToString();
-                }));
-                Thread.Sleep(delay);
-                ulong next = sum + sumPrev;
-                sumPrev = sum;
-                sum = next;
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        delay = (int)DelayInput.Value;
+                        FibonachiTextBox.Text = sumPrev.ToString();
+                    }));
+                    Thread.Sleep(delay);
+                    ulong next = sum + sumPrev;
+                    sumPrev = sum;
+                    sum = next;
+                }
+                else
+                {
+                    Thread.CurrentThread.Abort();
+                }
             }
         }
+        /// <summary>
+        /// Обработчик нажатия кнопки "Выход"
+        /// </summary>
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            isQuit = true;
             Close();
         }
     }
